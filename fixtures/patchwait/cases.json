@@ -1,0 +1,114 @@
+{
+  "changes": [
+    {
+      "name": "first run",
+      "previous": false,
+      "expected": {"node": 1, "roots": 1, "undetermined": 2, "total": 4}
+    },
+    {
+      "name": "unchanged",
+      "expected": {"node": 0, "roots": 0, "undetermined": 0, "total": 0}
+    },
+    {
+      "name": "one new node",
+      "append_node": {
+        "path": "C:\\Apps\\Beta\\node.exe",
+        "product_version": "25.8.0",
+        "verdict": {"result": "found", "value": "25.8.0"}
+      },
+      "expected": {"node": 1, "roots": 0, "undetermined": 0, "total": 1}
+    },
+    {
+      "name": "same path different version",
+      "node_version": "26.10.0",
+      "expected": {"node": 1, "roots": 0, "undetermined": 0, "total": 1}
+    },
+    {
+      "name": "one new trust location",
+      "append_roots": {
+        "location": "C:\\Java\\cacerts",
+        "location_kind": "java_keystore",
+        "role": "trust",
+        "distrust": "G3 fixture",
+        "verdict": {"result": "found", "value": ["sha256"]}
+      },
+      "expected": {"node": 0, "roots": 1, "undetermined": 0, "total": 1}
+    },
+    {
+      "name": "distrust finding is not an alert",
+      "append_roots": {
+        "location": "CurrentUser\\Disallowed",
+        "location_kind": "disallowed_store",
+        "role": "distrust",
+        "distrust": "G3 fixture",
+        "verdict": {"result": "found", "value": ["sha256"]}
+      },
+      "expected": {"node": 0, "roots": 0, "undetermined": 0, "total": 0}
+    },
+    {
+      "name": "node undetermined increase",
+      "append_node": {
+        "path": "C:\\Apps\\Unknown\\node.exe",
+        "product_version": null,
+        "verdict": {"result": "undetermined", "reason": "no_version_resource", "detail": "fixture unknown version"}
+      },
+      "expected": {"node": 0, "roots": 0, "undetermined": 1, "total": 1}
+    },
+    {
+      "name": "trust undetermined increase",
+      "append_roots": {
+        "location": "C:\\Java\\cacerts",
+        "location_kind": "java_keystore",
+        "role": "trust",
+        "distrust": "G3 fixture",
+        "verdict": {"result": "undetermined", "reason": "keystore_unreadable", "detail": "fixture access denied"}
+      },
+      "expected": {"node": 0, "roots": 0, "undetermined": 1, "total": 1}
+    },
+    {
+      "name": "distrust undetermined increase",
+      "append_roots": {
+        "location": "CurrentUser\\Disallowed",
+        "location_kind": "disallowed_store",
+        "role": "distrust",
+        "distrust": "G3 fixture",
+        "verdict": {"result": "undetermined", "reason": "store_unreadable", "detail": "fixture access denied"}
+      },
+      "expected": {"node": 0, "roots": 0, "undetermined": 1, "total": 1}
+    },
+    {
+      "name": "a decrease elsewhere cannot cancel an increase",
+      "remove_node": "undetermined",
+      "append_roots": {
+        "location": "C:\\Java\\cacerts",
+        "location_kind": "java_keystore",
+        "role": "trust",
+        "distrust": "G3 fixture",
+        "verdict": {"result": "undetermined", "reason": "keystore_unreadable", "detail": "fixture access denied"}
+      },
+      "expected": {"node": 0, "roots": 0, "undetermined": 1, "total": 1}
+    },
+    {
+      "name": "disappearing findings are not alerts",
+      "remove_node": "found",
+      "remove_roots": "found",
+      "expected": {"node": 0, "roots": 0, "undetermined": 0, "total": 0}
+    },
+    {
+      "name": "baseline",
+      "previous": false,
+      "baseline": true,
+      "expected": {"node": 0, "roots": 0, "undetermined": 0, "total": 0}
+    }
+  ],
+  "failures": [
+    {"name": "missing executable", "missing": true},
+    {"name": "exit 2 even with valid JSON", "command": "scan", "returncode": 2},
+    {"name": "bad JSON", "command": "roots", "raw": "{ not JSON"},
+    {"name": "timeout", "command": "scan", "timeout": true},
+    {"name": "stale JSON must not be reused", "command": "roots", "no_output": true},
+    {"name": "wrong JSON shape", "command": "scan", "raw": "{}"},
+    {"name": "counts disagree with items", "command": "scan", "wrong_counts": true},
+    {"name": "executable disappears", "command": "roots", "launch_error": true}
+  ]
+}

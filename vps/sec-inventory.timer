@@ -1,0 +1,11 @@
+[Unit]
+Description=Send VPS inventory on the configured schedule
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:30:00 Asia/Tokyo
+Persistent=true
+AccuracySec=1s
+Unit=sec-inventory.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Collect VPS inventory and send it to a configured peer with Taildrop
+Wants=network-online.target
+After=network-online.target docker.service tailscaled.service
+
+[Service]
+Type=oneshot
+TimeoutStartSec=300
+Environment=SEC_INVENTORY_CONFIG=/var/lib/sec-inventory/local-config.json
+User=root
+ExecStart=/usr/bin/python3 /usr/local/lib/sec-inventory/sec-inventory.py
+StateDirectory=sec-inventory
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/sec-inventory

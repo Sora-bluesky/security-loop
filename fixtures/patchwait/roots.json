@@ -1,0 +1,50 @@
+{
+  "tool": "patchwait",
+  "schema": 1,
+  "generated": "2026-10-30T09:00:00+09:00",
+  "check": "roots",
+  "distrust": [{"label": "G3 fixture"}],
+  "counts": {
+    "items": 4,
+    "trust": {"found": 1, "not_found": 1, "undetermined": 1},
+    "distrust": {"found": 1, "not_found": 0, "undetermined": 0}
+  },
+  "items": [
+    {
+      "location": "LocalMachine\\ROOT",
+      "location_kind": "root_store",
+      "role": "trust",
+      "distrust": "G3 fixture",
+      "verdict": {"result": "found", "value": ["sha256"]},
+      "matches": [],
+      "details": {}
+    },
+    {
+      "location": "CurrentUser\\ROOT",
+      "location_kind": "root_store",
+      "role": "trust",
+      "distrust": "G3 fixture",
+      "verdict": {"result": "not_found"},
+      "matches": [],
+      "details": {}
+    },
+    {
+      "location": "AuthRoot",
+      "location_kind": "authroot_ctl",
+      "role": "trust",
+      "distrust": "G3 fixture",
+      "verdict": {"result": "undetermined", "reason": "store_unreadable", "detail": "fixture access denied"},
+      "matches": [],
+      "details": {}
+    },
+    {
+      "location": "LocalMachine\\Disallowed",
+      "location_kind": "disallowed_store",
+      "role": "distrust",
+      "distrust": "G3 fixture",
+      "verdict": {"result": "found", "value": ["sha256"]},
+      "matches": [],
+      "details": {}
+    }
+  ]
+}

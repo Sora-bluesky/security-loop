@@ -1,0 +1,40 @@
+{
+  "tool": "patchwait",
+  "schema": 1,
+  "generated": "2026-10-30T09:00:00+09:00",
+  "kind": "node",
+  "baselines": {
+    "node": {
+      "minimums": ["26.12.1", "25.8.2"],
+      "source": "https://nodejs.org/en/blog/vulnerability"
+    }
+  },
+  "counts": {"targets": 3, "found": 1, "not_found": 1, "undetermined": 1},
+  "walk": [],
+  "items": [
+    {
+      "path": "C:\\Apps\\Alpha\\node.exe",
+      "location_kind": "file",
+      "product": {"name": "Alpha", "inferred": true},
+      "product_version": "26.11.0",
+      "checked_against": {"minimum": "26.12.1", "source": "https://nodejs.org/en/blog/vulnerability"},
+      "verdict": {"result": "found", "value": "26.11.0"}
+    },
+    {
+      "path": "C:\\Apps\\Patched\\node.exe",
+      "location_kind": "file",
+      "product": {"name": "Patched", "inferred": true},
+      "product_version": "26.12.1",
+      "checked_against": {"minimum": "26.12.1", "source": "https://nodejs.org/en/blog/vulnerability"},
+      "verdict": {"result": "not_found"}
+    },
+    {
+      "path": "C:\\Apps\\Unreadable",
+      "location_kind": "directory",
+      "product": {"name": "Unreadable", "inferred": true},
+      "product_version": null,
+      "checked_against": {"minimum": null, "source": "https://nodejs.org/en/blog/vulnerability"},
+      "verdict": {"result": "undetermined", "reason": "file_unreadable", "detail": "fixture access denied"}
+    }
+  ]
+}

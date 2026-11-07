@@ -1,0 +1,128 @@
+{
+  "items": [
+    {
+      "id": "example-kernel",
+      "title": "合成例: ディストリビューションのカーネル修正待ち",
+      "summary": "合成例のカーネル修正を見守る。修正状況と深刻度は各主張の証拠を参照する。",
+      "status": "watching",
+      "kind": "cve",
+      "refs": ["https://security.example.test/CVE-2099-10001"],
+      "claims": [
+        {
+          "id": "distro",
+          "field": "distro_fix",
+          "text": "合成例のリリースでは修正を準備中と記録されている。",
+          "source_url": "https://distro.example.test/CVE-2099-10001",
+          "source_type": "distro",
+          "observed_at": "2026-11-07T09:00:00+09:00",
+          "observed_by": "parent",
+          "release": "26.04",
+          "package": "linux",
+          "check": {
+            "kind": "ubuntu_cve",
+            "cve": "CVE-2099-10001",
+            "release": "26.04",
+            "package": "linux",
+            "expected": {"release": "26.04", "package": "linux", "status": "pending", "fixed_version": null}
+          }
+        },
+        {
+          "id": "severity",
+          "field": "severity",
+          "text": "合成CNAがCVSS 3.1で9.8と評価した。",
+          "source_url": "https://cna.example.test/CVE-2099-10001",
+          "source_type": "cna",
+          "observed_at": "2026-11-07T09:00:00+09:00",
+          "observed_by": "parent",
+          "cvss_version": "3.1",
+          "score": "9.8",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "scorer": "ExampleCNA",
+          "check": {
+            "kind": "cve_record",
+            "cve": "CVE-2099-10001",
+            "provider": "cna",
+            "cvss_version": "3.1",
+            "expected": {"version": "3.1", "score": "9.8", "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H", "scorer": "ExampleCNA", "role": "cna"}
+          }
+        },
+        {
+          "id": "upstream",
+          "field": "upstream_fix",
+          "text": "上流の合成告知には対処案が記載されている。",
+          "source_url": "https://vendor.example.test/kernel/advisory",
+          "source_type": "vendor",
+          "observed_at": "2026-11-07T09:00:00+09:00",
+          "observed_by": "parent"
+        }
+      ]
+    },
+    {
+      "id": "example-desktop-advisory",
+      "title": "合成例: 複数のデスクトップ製品についての研究報告",
+      "summary": "合成例の製品別報告と過去の手動観測を確認する。",
+      "status": "open",
+      "kind": "advisory",
+      "refs": ["https://research.example.test/desktop-report"],
+      "claims": [
+        {
+          "id": "desktop-a",
+          "field": "product_status",
+          "text": "Example Desktop Aについて研究者は問題Aを修正済みと記している。",
+          "source_url": "https://research.example.test/desktop-report",
+          "source_type": "researcher",
+          "observed_at": "2026-11-07T09:00:00+09:00",
+          "observed_by": "parent",
+          "product": "Example Desktop A",
+          "issue_ref": "EXAMPLE-A",
+          "quote": "Synthetic example: issue A in Desktop A was fixed on October 1.",
+          "demo_env": "macOS (synthetic demonstration)"
+        },
+        {
+          "id": "desktop-b",
+          "field": "product_status",
+          "text": "Example Desktop Bについて提供元は問題Bを調査中と記している。",
+          "source_url": "https://vendor.example.test/desktop-b/advisory",
+          "source_type": "vendor",
+          "observed_at": "2026-11-07T09:00:00+09:00",
+          "observed_by": "parent",
+          "product": "Example Desktop B",
+          "issue_ref": "EXAMPLE-B",
+          "quote": "Synthetic example: issue B is under investigation."
+        },
+        {
+          "id": "desktop-c",
+          "field": "product_status",
+          "text": "Example Desktop Cについて提供元は問題Cの影響を受けないと記している。",
+          "source_url": "https://vendor.example.test/desktop-c/advisory",
+          "source_type": "vendor",
+          "observed_at": "2026-11-07T09:00:00+09:00",
+          "observed_by": "parent",
+          "product": "Example Desktop C",
+          "issue_ref": "EXAMPLE-C",
+          "quote": "Synthetic example: Desktop C is not affected by issue C."
+        },
+        {
+          "id": "past-observation",
+          "field": "our_exposure",
+          "text": "合成の接続試験では対象のポートへ接続できなかった。",
+          "source_url": "https://observations.example.test/2026-11-04",
+          "source_type": "own_observation",
+          "observed_at": "2026-11-04T12:00:00+09:00",
+          "observed_by": "parent",
+          "observation_scope": "one_connection_attempt_from_example_test_network"
+        },
+        {
+          "id": "mitigation",
+          "field": "mitigation",
+          "text": "合成試験では一時的な規則を追加した。",
+          "source_url": "https://observations.example.test/2026-11-04/mitigation",
+          "source_type": "own_observation",
+          "observed_at": "2026-11-04T12:00:00+09:00",
+          "observed_by": "parent",
+          "persistence": "lost_on_reboot"
+        }
+      ]
+    }
+  ]
+}

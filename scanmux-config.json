@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "osvDatabase": ".tools/osv-db",
+  "tools": {},
+  "timeoutMs": 300000
+}

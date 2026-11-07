@@ -1,0 +1,4 @@
+#!/bin/sh
+# Only chains to the global post-checkout hook.
+. "$(dirname "$0")/chain.sh"
+global_hook post-checkout "$@"

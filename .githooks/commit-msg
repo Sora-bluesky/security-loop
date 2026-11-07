@@ -1,0 +1,6 @@
+#!/bin/sh
+# Global commit-msg first, then the publish check on the message file.
+. "$(dirname "$0")/chain.sh"
+global_hook commit-msg "$@" || exit $?
+top=$(git rev-parse --show-toplevel) || exit 2
+run_python "$top/tools/publish_check.py" message "$1"

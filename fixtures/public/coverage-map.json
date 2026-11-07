@@ -1,0 +1,359 @@
+[
+  {
+    "match": "(?!)",
+    "product": "Example Product",
+    "kinds": [
+      "services",
+      "listening"
+    ],
+    "routes": [
+      {
+        "type": "kev",
+        "ref": "Microsoft Windows"
+      },
+      {
+        "type": "manual",
+        "ref": "Windows Update checklist"
+      }
+    ],
+    "path_match": "^\"?C:\\\\Windows\\\\"
+  },
+  {
+    "match": "^System$",
+    "product": "Example Product",
+    "kinds": [
+      "listening"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^(?:[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}|Microsoft\\..*|Clipchamp\\.Clipchamp)$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ],
+    "publisher_match": "Microsoft (?:Windows|Corporation)"
+  },
+  {
+    "match": "^jq(?: |$)",
+    "product": "jq",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "github_advisories",
+        "ref": "jqlang/jq"
+      },
+      {
+        "type": "winget",
+        "ref": "jq"
+      }
+    ]
+  },
+  {
+    "match": "^Notepad\\+\\+(?: |$)",
+    "product": "Notepad++",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "github_advisories",
+        "ref": "notepad-plus-plus/notepad-plus-plus"
+      },
+      {
+        "type": "winget",
+        "ref": "Notepad++"
+      }
+    ]
+  },
+  {
+    "match": "^NotepadPlusPlus$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "winget",
+        "ref": "Example Editor"
+      }
+    ]
+  },
+  {
+    "match": "^Microsoft\\ OneNote$",
+    "product": "Microsoft OneNote",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^Microsoft\\ 365\\ \\-\\ ja\\-jp$",
+    "product": "Microsoft 365",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^Visual\\ Studio\\ Community$",
+    "product": "Visual Studio",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^Microsoft\\ \\.NET\\ SDK$",
+    "product": ".NET",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^Microsoft\\ Windows\\ Desktop\\ Runtime$",
+    "product": ".NET",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^Microsoft\\ ASP\\.NET\\ Core$",
+    "product": ".NET",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Windows Update"
+      }
+    ]
+  },
+  {
+    "match": "^sshd$",
+    "product": "Example Product",
+    "kinds": [
+      "vps_listening"
+    ],
+    "routes": [
+      {
+        "type": "osv",
+        "ref": "openssh"
+      }
+    ]
+  },
+  {
+    "match": "^systemd-resolve$",
+    "product": "Example Product",
+    "kinds": [
+      "vps_listening"
+    ],
+    "routes": [
+      {
+        "type": "osv",
+        "ref": "systemd"
+      }
+    ]
+  },
+  {
+    "match": "^docker-proxy$",
+    "product": "Example Product",
+    "kinds": [
+      "vps_listening"
+    ],
+    "routes": [
+      {
+        "type": "osv",
+        "ref": "docker.io"
+      },
+      {
+        "type": "osv",
+        "ref": "docker-ce"
+      }
+    ]
+  },
+  {
+    "match": "^sshd$",
+    "product": "Example Product",
+    "kinds": [
+      "services"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Example service checklist"
+      }
+    ]
+  },
+  {
+    "match": "^ollama$",
+    "product": "Example Product",
+    "kinds": [
+      "listening"
+    ],
+    "routes": [
+      {
+        "type": "github_advisories",
+        "ref": "example/example-runtime"
+      }
+    ]
+  },
+  {
+    "match": "^Example runtime_advisory$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "runtime_advisory",
+        "ref": "example/example-app"
+      }
+    ]
+  },
+  {
+    "match": "^Example release$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "release",
+        "ref": "example/example-app"
+      }
+    ]
+  },
+  {
+    "match": "^Example kev$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "kev",
+        "ref": "Example Product"
+      }
+    ]
+  },
+  {
+    "match": "^Example x_watch$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "x_watch",
+        "ref": "Example Product"
+      }
+    ]
+  },
+  {
+    "match": "^Example manual$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Example Product"
+      }
+    ]
+  },
+  {
+    "match": "^Example winget$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "winget",
+        "ref": "Example Product"
+      }
+    ]
+  },
+  {
+    "match": "^Example github_advisories$",
+    "product": "Example Product",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "github_advisories",
+        "ref": "example/example-app"
+      }
+    ]
+  },
+  {
+    "match": "^(Linux カーネル|Example OS)$",
+    "product": "Example Product",
+    "kinds": [
+      "manual"
+    ],
+    "routes": [
+      {
+        "type": "osv",
+        "ref": "linux"
+      }
+    ]
+  },
+  {
+    "match": "^lab\\.example\\.test$",
+    "product": "Example Product",
+    "kinds": [
+      "containers_vms"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Example VM contents checklist"
+      }
+    ]
+  }
+]

@@ -1,0 +1,63 @@
+[
+  {
+    "match": "^Example App$",
+    "product": "Example App",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "github_advisories",
+        "ref": "example/example-app"
+      },
+      {
+        "type": "winget",
+        "ref": "Example App"
+      }
+    ]
+  },
+  {
+    "match": "^Example Appliance$",
+    "product": "Example Appliance",
+    "kinds": [
+      "manual"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Check https://example.test/advisories/"
+      }
+    ],
+    "note": "Replace with your own inventory and review process."
+  },
+  {
+    "match": "^Example.StoreApp$",
+    "publisher_match": "Example Publisher",
+    "product": "Example Store App",
+    "kinds": [
+      "apps"
+    ],
+    "routes": [
+      {
+        "type": "winget",
+        "ref": "Example Store App"
+      }
+    ]
+  },
+  {
+    "match": "^example-service$",
+    "product": "Example Service",
+    "path_match": "^\"?D:\\\\ExampleApps\\\\",
+    "kinds": [
+      "services",
+      "listening"
+    ],
+    "routes": [
+      {
+        "type": "manual",
+        "ref": "Check https://example.test/service/"
+      }
+    ],
+    "note": "Synthetic path example."
+  }
+]

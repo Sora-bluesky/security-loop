@@ -1,0 +1,64 @@
+{
+  "scan": {
+    "python_roots": [
+      "D:/projects"
+    ],
+    "npm_lock_roots": [
+      "D:/projects"
+    ],
+    "patchwait": {
+      "enabled": true,
+      "node_roots": [
+        "D:/runtimes"
+      ],
+      "roots_keystore": "D:/jdk/lib/security/cacerts"
+    },
+    "scanmux": {
+      "enabled": true,
+      "node": "D:/tools/node.exe",
+      "entry": "D:/tools/scanmux/bin/scanmux.mjs",
+      "config": "D:/security-loop/scanmux-config.json",
+      "repos": [
+        "D:/projects/example"
+      ]
+    },
+    "vps_hosts": [
+      "vps.example.test"
+    ],
+    "vps_inventory_glob": "D:/inbox/vps-inventory*.json",
+    "vps_inventory_filename": "vps-inventory.json",
+    "vps_private_networks": [
+      "100.64.0.0/10",
+      "2001:db8:1::/48"
+    ],
+    "coverage_extra_rules": [
+      {
+        "match": "^lab\\.example\\.test$",
+        "product": "Lab VM",
+        "kinds": [
+          "containers_vms"
+        ],
+        "routes": [
+          {
+            "type": "manual",
+            "ref": "Lab VM inventory"
+          }
+        ]
+      }
+    ]
+  },
+  "scanmux": {
+    "osvDatabase": "D:/tools/osv-db",
+    "tools": {
+      "git": {
+        "path": "D:/tools/git.exe",
+        "sha256": "<SHA256>",
+        "version": "<VERSION>"
+      }
+    }
+  },
+  "vps": {
+    "inventory_filename": "vps-inventory.json",
+    "taildrop_target": "pc.example.test:"
+  }
+}

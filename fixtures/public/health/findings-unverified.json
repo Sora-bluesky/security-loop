@@ -1,0 +1,19 @@
+{
+  "unverified": [
+    {
+      "kind": "inventory",
+      "target": "listening",
+      "reason": "State が無い"
+    },
+    {
+      "kind": "scanmux",
+      "target": "example/repo",
+      "reason": "dirty_worktree"
+    },
+    {
+      "kind": "winget",
+      "target": "Example App",
+      "reason": "version_mismatch"
+    }
+  ]
+}

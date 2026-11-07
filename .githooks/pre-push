@@ -1,0 +1,31 @@
+#!/bin/sh
+# Global pre-push first (same stdin), then the publish check and gitleaks for
+# every pushed ref.
+. "$(dirname "$0")/chain.sh"
+tmp=$(mktemp) || exit 2
+trap 'rm -f "$tmp"' EXIT
+trap 'exit 2' HUP INT TERM
+cat >"$tmp" || exit 2
+global_hook pre-push "$@" <"$tmp" || exit $?
+top=$(git rev-parse --show-toplevel) || exit 2
+remote=$1 # the push target's name, or its URL when pushing to a URL
+url=$2    # the URL the push actually goes to
+# Python selects the URL policy and revisions for both checks.
+run_python "$top/tools/publish_check.py" destination --url="$url" </dev/null || exit $?
+command -v gitleaks >/dev/null 2>&1 || { echo "publish check: gitleaks missing; rejecting (fail closed)" >&2; exit 2; }
+status=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+	[ -n "$local_sha" ] || continue
+	run_python "$top/tools/publish_check.py" range --remote="$remote" --url="$url" --remote-ref="$remote_ref" "$remote_sha" "$local_sha" </dev/null || status=$?
+	case $local_sha in
+	*[!0]*) ;;
+	*) continue ;; # deleting a remote ref publishes nothing
+	esac
+	if ! log_opts=$(run_python "$top/tools/publish_check.py" revs --remote="$remote" --url="$url" --remote-ref="$remote_ref" "$remote_sha" "$local_sha" </dev/null) || [ -z "$log_opts" ]; then
+		echo "publish check: cannot work out the pushed commits; rejecting (fail closed)" >&2
+		status=2
+		continue
+	fi
+	run_gitleaks git --log-opts="$log_opts" "$top" </dev/null || status=$?
+done <"$tmp"
+exit $status

@@ -1,0 +1,7 @@
+#!/bin/sh
+# Global pre-commit first, then the publish check and gitleaks on the index.
+. "$(dirname "$0")/chain.sh"
+global_hook pre-commit "$@" || exit $?
+top=$(git rev-parse --show-toplevel) || exit 2
+run_python "$top/tools/publish_check.py" staged || exit $?
+run_gitleaks git --pre-commit --staged "$top"

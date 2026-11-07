@@ -1,0 +1,65 @@
+{
+  "python_roots": [
+    "examples/projects"
+  ],
+  "npm_lock_roots": [
+    "examples/projects"
+  ],
+  "exclude_path_parts": [
+    ".git",
+    "node_modules"
+  ],
+  "watch_releases": [
+    "example/example-app"
+  ],
+  "tag_repos": [],
+  "kev_keywords": [
+    "Example Appliance"
+  ],
+  "patchtheplanet_url": "https://example.test/disclosures/",
+  "patchwait": {
+    "enabled": false,
+    "node_roots": [
+      "examples/apps"
+    ],
+    "node_excludes": [],
+    "roots_keystore": "",
+    "timeout_sec": 600
+  },
+  "scanmux": {
+    "enabled": false,
+    "node": "D:/example/node.exe",
+    "entry": "D:/example/scanmux.mjs",
+    "config": "D:/example/scanmux-config.json",
+    "repos": [],
+    "timeout_sec": 600
+  },
+  "osv_batch_size": 1000,
+  "coverage_map": "coverage-map.json",
+  "vps_hosts": [
+    "vps.example.test"
+  ],
+  "vps_inventory_glob": "inbox/vps-inventory*.json",
+  "http_timeout_sec": 60,
+  "user_agent": "security-loop-example/1.0",
+  "runtime_advisories": [
+    {
+      "repo": "example/example-runtime",
+      "version_cmd": [
+        "example-runtime",
+        "--version"
+      ]
+    }
+  ],
+  "osv_detail_ttl_hours": 24,
+  "advisory_fixed_overrides": {
+    "GHSA-aaaa-bbbb-cccc": {
+      "fixed": [
+        "1.2.3"
+      ],
+      "note": "Synthetic comparison example",
+      "source": "https://example.test/advisory"
+    }
+  },
+  "vps_inventory_filename": "vps-inventory.json"
+}
