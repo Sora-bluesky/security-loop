@@ -42,3 +42,4 @@ fixtures/public/health/timelines/EXAMPLE_FEED.json
 fixtures/public/index.html
 fixtures/public/scanmux-config.json
 fixtures/public/README.md
+.github/workflows/anthropic-wif-test.yml

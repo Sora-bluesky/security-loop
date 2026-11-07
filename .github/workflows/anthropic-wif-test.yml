@@ -1,0 +1,86 @@
+# Checks Anthropic WIF token exchange; never calls a model.
+name: Anthropic WIF test
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  exchange:
+    if: github.repository == 'Sora-bluesky/security-loop' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
+        with:
+          script: |
+            const names = [
+              'ANTHROPIC_FEDERATION_RULE_ID',
+              'ANTHROPIC_ORGANIZATION_ID',
+              'ANTHROPIC_SERVICE_ACCOUNT_ID',
+              'ANTHROPIC_WORKSPACE_ID',
+            ];
+            const missing = names.filter(name => !process.env[name]?.trim());
+            if (missing.length) {
+              core.setFailed(`Missing repository variables: ${missing.join(', ')}`);
+              return;
+            }
+            const [federation_rule_id, organization_id, service_account_id, workspace_id] =
+              names.map(name => process.env[name]);
+            try {
+              const jwt = await core.getIDToken('https://api.anthropic.com');
+              core.setSecret(jwt);
+              const response = await fetch('https://api.anthropic.com/v1/oauth/token', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                  grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+                  assertion: jwt,
+                  federation_rule_id,
+                  organization_id,
+                  service_account_id,
+                  workspace_id,
+                }),
+              });
+              let body;
+              try {
+                body = await response.json();
+              } catch {
+                body = null;
+              }
+              if (typeof body?.access_token === 'string') {
+                core.setSecret(body.access_token);
+              }
+              const safe = value => {
+                let text = typeof value === 'string' ? value : '';
+                for (const secret of [jwt, body?.access_token]) {
+                  if (typeof secret === 'string' && secret.length) {
+                    text = text.split(secret).join('[redacted]');
+                  }
+                }
+                return text.replace(/[\r\n]/g, ' ');
+              };
+              if (response.status >= 200 && response.status < 300 &&
+                  typeof body?.access_token === 'string' &&
+                  body.access_token.startsWith('sk-ant-oat01-') &&
+                  typeof body.expires_in === 'number' &&
+                  Number.isFinite(body.expires_in) && body.expires_in > 0) {
+                core.info(`WIF exchange ok: token_type=${safe(body.token_type)}, expires_in=${body.expires_in}s, scope=${safe(body.scope) || 'n/a'}`);
+                return;
+              }
+              const error = body?.error;
+              const detail = (typeof error === 'string'
+                ? [error, body?.error_description]
+                : [error?.type, error?.message])
+                .filter(value => typeof value === 'string')
+                .map(safe).join(': ').slice(0, 300);
+              core.setFailed(`WIF exchange failed: HTTP ${response.status}${detail ? ': ' + detail : ''}`);
+            } catch {
+              core.setFailed('WIF exchange failed: HTTP unavailable (OIDC or token exchange request failed)');
+            }
