@@ -214,3 +214,59 @@ Inspect its file list and content before publication. A fresh clone needs none o
 ## License
 
 [MIT](LICENSE)
+
+## agent_secrets.py
+
+Offline checker for literal credentials saved in Claude permission rules, settings
+`env` values, and MCP server strings. It reports path, location, kind, value length,
+and Git tracked/ignored status; it never reports credential values or their hashes.
+Locations use indices for server, environment, and header names, for example
+`mcpServers[0].headers[1]`, so dictionary keys cannot expose credentials.
+It uses only the Python standard library and local Git commands.
+
+```powershell
+py -3.14 -I -B agent_secrets.py --root .
+py -3.14 -I -B agent_secrets.py --file .claude/settings.local.json --json
+py -3.14 -I -B agent_secrets.py --root . --history
+py -3.14 -I -B agent_secrets.py --root . --exclude "archive*" --exclude "group/old-*" --history
+py -3.14 -I -B agent_secrets.py --selftest
+```
+
+Repeat `--root` or `--file` to scan multiple locations. There is no default root.
+Root discovery includes `.mcp.json` and `.claude/settings.local.json` / `settings.json`
+in directories up to five levels below each root (the root itself is level zero).
+It skips `node_modules`, `.git`, `.venv`, `venv`, `__pycache__`, and directory links.
+Repeat `--exclude GLOB` to skip directories by name or root-relative path using
+`fnmatch` (case-insensitive on Windows; `/` separates path components in examples).
+Matches are skipped before directory access, including matching roots and repositories;
+history findings under matching directories are also excluded. Each pattern gets a
+notice with its count of excluded directories encountered during discovery (including zero).
+Explicit `--file` targets bypass discovery. Invalid JSON is scanned line by line
+and findings are marked `unparsed`. Unreadable targets are errors.
+An unreadable or vanished directory records its path, failing step, and OS error
+class/errno; discovery continues through the other directories. Git errors include
+the command step and exit code. Unknown Git status is `null` in JSON (`unknown` in text).
+An unusable `.git` that Git identifies as "not a git repository" is skipped with a
+`skipped invalid git dir` notice. Other Git failures remain errors, including
+`dubious ownership`; the checker never changes Git's ownership safety settings.
+
+`--history` also checks complete target files at up to 200 matching commits per
+repository using the same structured scanner, and reports truncation per repository.
+Repeated findings are grouped by path, location, kind, and length; `oldest_commit`
+and `newest_commit` retain the observed endpoints and their remote containment
+flags (`oldest_remote`, `newest_remote`). The existing `commit` and `remote` fields
+refer to the newest occurrence. Endpoints cover only the scanned commits.
+It discovers repositories (including `.git` files) up to five levels below each root, so a plain folder of repositories works.
+Each repository's history covers the target names at any depth, including files
+deleted from the working tree or now ignored. Explicit `--file` history stays scoped
+to those files unless that repository is also discovered through `--root`.
+Commit identifiers and remote containment refer to local Git data; nothing is fetched.
+JSON output includes `files_scanned`, `findings`, `errors`, and `notices`.
+Exit codes: **0** no findings, **10** findings, **2** usage/read/Git error (errors take precedence).
+References and placeholders are skipped; generic assignments require six characters.
+Provider-shaped values are reported except inside angle-bracket placeholders
+or `op://` references; fixed-length GitHub token shapes require 36 alphanumeric
+characters after the prefix. Uppercase values containing digits are not placeholders.
+Supported forms include attached `curl -uuser:pass`, `Authorization: token`, and
+`api-key` headers. This is a heuristic check, not proof
+that settings contain no credentials. It does not modify the scanned files.

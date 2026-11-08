@@ -7,8 +7,10 @@ report_build.py
 impact-items.example.json
 source_health.py
 xseen.py
+agent_secrets.py
 local-config.example.json
 scanmux-config.json
+fixtures/agent-secrets/cases.json
 fixtures/patchwait/cases.json
 fixtures/patchwait/node.json
 fixtures/patchwait/roots.json

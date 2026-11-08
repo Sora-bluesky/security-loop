@@ -201,18 +201,38 @@ def _add_stat(table: dict, key: str, sec: float, fail: bool = False) -> None:
         s["fail"] += int(fail)
 
 
+class SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def __init__(self, allowed_hostname: str | None = None):
+        self.allowed_hostname = allowed_hostname
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = urllib.parse.urlsplit(newurl)
+        if target.scheme != "https":
+            raise RuntimeError("HTTP redirect URL must use HTTPS")
+        if self.allowed_hostname is not None and target.hostname != self.allowed_hostname:
+            raise RuntimeError("HTTP redirect URL must use the allowed hostname")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
 class Http:
     def __init__(self, ua: str, timeout: int):
         self.ua, self.timeout = ua, timeout
 
-    def request(self, url: str, body=None, tries: int = 3, *, text: bool = False):
+    def request(self, url: str, body=None, tries: int = 3, *, text: bool = False,
+                allowed_hostname: str | None = None):
         t_start = time.time()
         try:
-            return self._request(url, body, tries, text=text)
+            return self._request(url, body, tries, text=text, allowed_hostname=allowed_hostname)
         finally:
             _add_stat(HTTP_STATS, http_kind(url), time.time() - t_start)
 
-    def _request(self, url: str, body=None, tries: int = 3, *, text: bool = False):
+    def _request(self, url: str, body=None, tries: int = 3, *, text: bool = False,
+                 allowed_hostname: str | None = None):
+        if urllib.parse.urlsplit(url).scheme != "https":
+            raise RuntimeError("HTTP request URL must use HTTPS")
+        if allowed_hostname is not None and urllib.parse.urlsplit(url).hostname != allowed_hostname:
+            raise RuntimeError("HTTP request URL must use the allowed hostname")
+        opener = urllib.request.build_opener(SafeRedirectHandler(allowed_hostname))
         data = None if body is None else json.dumps(body).encode("utf-8")
         last = None
         for i in range(tries):
@@ -224,7 +244,7 @@ class Http:
             if data:
                 req.add_header("Content-Type", "application/json")
             try:
-                with urllib.request.urlopen(req, timeout=self.timeout) as r:
+                with opener.open(req, timeout=self.timeout) as r:
                     content = r.read().decode("utf-8")
                     return content if text else json.loads(content)
             except urllib.error.HTTPError as e:
@@ -302,6 +322,8 @@ def load_vps_inventory(pattern: str, state_path: Path, unverified: list, hosts: 
         if impact_inventories is not None:
             previous = impact_inventories.get(doc["host"])
             collected = dt.datetime.fromisoformat(doc["generated"].replace("Z", "+00:00"))
+            if collected > now:
+                return
             if previous is None or collected > dt.datetime.fromisoformat(previous["generated"].replace("Z", "+00:00")):
                 impact_inventories[doc["host"]] = doc
 
@@ -490,10 +512,12 @@ def selftest_vps_arrivals() -> None:
                         (now - dt.timedelta(hours=14)).isoformat()):
             write_json(saved, {**doc, "generated": invalid})
             write_json(received, doc)
-            errors = []
-            assert load_vps_inventory(pattern, saved, errors, ["fixture"], now=now) == doc, \
+            errors, snapshots = [], {}
+            assert load_vps_inventory(pattern, saved, errors, ["fixture"], now=now,
+                                      impact_inventories=snapshots) == doc, \
                 "invalid saved inventory must not suppress a valid arrival"
             assert read_json(saved, None) == doc and not received.exists() and errors
+            assert snapshots == {"fixture": doc}
         custom = root / "custom.example.test (1).json"
         unrelated = root / "customXexampleXtest.json"
         write_json(custom, doc)
@@ -502,6 +526,41 @@ def selftest_vps_arrivals() -> None:
         assert load_vps_inventory(str(root / "custom*.json"), custom_saved, [], ["fixture"], now=now,
                                   inventory_filename="custom.example.test.json") == doc
         assert not custom.exists() and unrelated.exists()
+
+    for with_genuine in (True, False):
+        with tempfile.TemporaryDirectory(prefix=".vps-dates-", dir=HERE) as temporary:
+            root = Path(temporary)
+            saved = root / "saved.json"
+            future = root / "vps-inventory (1).json"
+            write_json(future, {**doc, "generated": (now + dt.timedelta(hours=1)).isoformat()})
+            if with_genuine:
+                write_json(root / "vps-inventory.json", doc)
+            for _ in range(2):
+                errors, snapshots = [], {}
+                loaded = load_vps_inventory(str(root / "vps-inventory*.json"), saved, errors,
+                                            ["fixture"], now=now, impact_inventories=snapshots)
+                assert loaded == (doc if with_genuine else None)
+                assert snapshots == ({"fixture": doc} if with_genuine else {})
+                assert any("generated が未来または13時間超" in e["reason"] for e in errors)
+                assert future.exists()
+                assert read_json(saved, None) == (doc if with_genuine else None)
+
+    for location in ("saved.json", "vps-inventory.json"):
+        for hours in (-14, 1):
+            with tempfile.TemporaryDirectory(prefix=".vps-impact-dates-", dir=HERE) as temporary:
+                root = Path(temporary)
+                saved = root / "saved.json"
+                candidate = {**doc, "generated": (now + dt.timedelta(hours=hours)).isoformat()}
+                write_json(root / location, candidate)
+                for _ in range(2):
+                    errors, snapshots = [], {}
+                    assert load_vps_inventory(str(root / "vps-inventory*.json"), saved, errors,
+                                              ["fixture"], now=now, impact_inventories=snapshots) is None
+                    assert snapshots == ({"fixture": candidate} if hours < 0 else {}), \
+                        "impact must retain old inventories but exclude future inventories"
+                    assert any("generated が未来または13時間超" in e["reason"] for e in errors)
+                    assert read_json(root / location, None) == candidate
+                    assert saved.exists() is (location == "saved.json")
 
 
 def selftest_vps_details() -> None:
@@ -3190,7 +3249,11 @@ def extract_ptp(html: str, fetcher, url: str = "https://patchtheplanet.org/") ->
     scripts.feed(html)
     if not scripts.urls:
         raise RuntimeError("module script URL が見つからない")
-    bundle = fetcher(urllib.parse.urljoin(url, scripts.urls[0]))
+    script_url = urllib.parse.urljoin(url, scripts.urls[0])
+    script = urllib.parse.urlsplit(script_url)
+    if script.scheme != "https" or script.hostname != urllib.parse.urlsplit(url).hostname:
+        raise RuntimeError("module script URL must use HTTPS and the page hostname")
+    bundle = fetcher(script_url)
     cve_re = r"\bCVE-\d{4}-\d{4,}\b"
     disclosures = {}
     for literal in re.findall(r'\btitle\s*[:=]\s*("(?:[^"\\]|\\.)*")', bundle):
@@ -3222,6 +3285,10 @@ def ptp_findings(disclosures: list, cves: set[str], state: dict) -> list:
 
 
 def selftest_ptp() -> int:
+    import io
+    from email.message import Message
+    from unittest.mock import patch
+
     html = (PUBLIC_FIXTURES / "index.html").read_text(encoding="utf-8")
     bundle = (PUBLIC_FIXTURES / "app.js").read_text(encoding="utf-8")
     fetched = []
@@ -3254,7 +3321,80 @@ def selftest_ptp() -> int:
             assert reason in str(e)
         else:
             raise AssertionError(reason)
-    print("selftest-ptp: 成功（fixture 抽出・初回・既知・新規タイトル/CVE・形変更・script 欠落）")
+    for src in ("file:///etc/passwd", "http://127.0.0.1/x.js", "https://evil.example/x.js"):
+        fetched.clear()
+        try:
+            extract_ptp(f'<script type="module" src="{src}"></script>', fetcher)
+        except RuntimeError:
+            pass  # The scan records extraction errors as unverified.
+        else:
+            raise AssertionError("unsafe script URL must be unverified")
+        assert not fetched, "unsafe script URL reached the fetcher"
+    with patch.object(urllib.request.OpenerDirector, "open") as opening:
+        opening.return_value.__enter__.return_value.read.return_value = b"{}"
+        http = Http("selftest", 1)
+        for url in ("file:///etc/passwd", "http://127.0.0.1/x.js", "ftp://example.test/x.js"):
+            try:
+                http._request(url)
+            except RuntimeError:
+                pass
+            else:
+                raise AssertionError("non-HTTPS URL accepted by Http")
+        opening.assert_not_called()
+        assert http._request("https://example.test/x.js") == {}
+        assert opening.call_count == 1
+    requested = []
+    start = "https://patchtheplanet.org/redirect.js"
+
+    def serve(req):
+        requested.append(req.full_url)
+        headers = Message()
+        code, content = 200, bundle.encode("utf-8")
+        if req.full_url == start:
+            code, content = status, b""
+            headers["Location"] = "/intermediate.js" if chained else target
+        elif req.full_url == "https://patchtheplanet.org/intermediate.js":
+            code, content = status, b""
+            headers["Location"] = target
+        response = urllib.response.addinfourl(io.BytesIO(content), headers, req.full_url, code)
+        response.msg = "fixture"
+        return response
+
+    with patch.object(urllib.request, "getproxies", return_value={}), \
+            patch.object(urllib.request.HTTPSHandler, "https_open", side_effect=serve), \
+            patch.object(urllib.request.HTTPHandler, "http_open", side_effect=serve), \
+            patch.object(time, "sleep"):
+        # Exercise the real opener and redirect handler, without any socket connection.
+        for status in (301, 302, 303, 307, 308):
+            for chained in (False, True):
+                for target in ("http://127.0.0.1/x.js", "https://evil.example/x.js",
+                               "/final.js", "https://patchtheplanet.org/final.js"):
+                    requested.clear()
+                    blocked = target.startswith(("http:", "https://evil.example/"))
+                    try:
+                        actual = extract_ptp('<script type="module" src="/redirect.js"></script>',
+                                             lambda url: http.request(url, text=True, tries=1,
+                                                                      allowed_hostname="patchtheplanet.org"))
+                    except RuntimeError as exc:
+                        assert blocked and "HTTP redirect URL must use" in str(exc)
+                    else:
+                        assert not blocked, "unsafe redirect must be unverified"
+                        assert actual == (disclosures, cves)
+                    prefix = [start] + (["https://patchtheplanet.org/intermediate.js"] if chained else [])
+                    assert requested == prefix + ([] if blocked else [urllib.parse.urljoin(start, target)]), \
+                        "unsafe redirect target was requested, or safe redirect was not followed"
+        # Other feeds may redirect to another HTTPS hostname, but never downgrade to HTTP.
+        status, chained = 302, False
+        for target in ("http://127.0.0.1/x.js", "https://evil.example/x.js"):
+            requested.clear()
+            try:
+                actual = http.request(start, text=True, tries=1)
+            except RuntimeError as exc:
+                assert target.startswith("http:") and "must use HTTPS" in str(exc)
+            else:
+                assert target.startswith("https:") and actual == bundle
+            assert requested == ([start] if target.startswith("http:") else [start, target])
+    print("selftest-ptp: 成功（fixture 抽出・初回・既知・新規タイトル/CVE・形変更・script 欠落・URL 制限・リダイレクト制限）")
     return 0
 
 
@@ -4954,7 +5094,9 @@ def main() -> int:
                  (args.selftest_impact, selftest_impact)]
     if any(selected for selected, _ in selftests):
         from unittest.mock import patch
-        with patch.object(urllib.request, "urlopen", side_effect=AssertionError("network forbidden in selftests")):
+        with patch.object(urllib.request, "urlopen", side_effect=AssertionError("network forbidden in selftests")), \
+                patch.object(urllib.request.HTTPHandler, "http_open", side_effect=AssertionError("network forbidden in selftests")), \
+                patch.object(urllib.request.HTTPSHandler, "https_open", side_effect=AssertionError("network forbidden in selftests")):
             results = [test() for selected, test in selftests if selected]
         return max(results)
     try:
@@ -5149,7 +5291,8 @@ def run_scan(args) -> int:
     if ptp_url:
         try:
             disclosures, ptp_cves = extract_ptp(http.request(ptp_url, text=True),
-                                                lambda url: http.request(url, text=True), ptp_url)
+                                                lambda url: http.request(url, text=True,
+                                                                         allowed_hostname=urllib.parse.urlsplit(ptp_url).hostname), ptp_url)
             findings_ptp = ptp_findings(disclosures, ptp_cves, state)
             for f in findings_ptp:
                 f["url"] = ptp_url

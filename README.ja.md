@@ -214,3 +214,48 @@ py -3.14 -I -B tools/publish_check.py --markers markers.txt --guard guard.json a
 ## ライセンス
 
 [MIT](LICENSE)
+
+## agent_secrets.py
+
+Claudeの権限ルール、設定の `env` 値、MCPサーバー設定の文字列に保存された認証情報を、オフラインで検査します。
+表示するのはパス、設定内の位置、種類、値の長さ、Gitの追跡・無視状態です。認証情報の値やハッシュは出力しません。
+サーバー名・環境変数名・ヘッダー名は `mcpServers[0].headers[1]` のように索引で示し、辞書のキーから値が漏れることを防ぎます。
+Python標準ライブラリとローカルのGitコマンドだけを使います。
+
+```powershell
+py -3.14 -I -B agent_secrets.py --root .
+py -3.14 -I -B agent_secrets.py --file .claude/settings.local.json --json
+py -3.14 -I -B agent_secrets.py --root . --history
+py -3.14 -I -B agent_secrets.py --root . --exclude "archive*" --exclude "group/old-*" --history
+py -3.14 -I -B agent_secrets.py --selftest
+```
+
+`--root` と `--file` は複数指定できます。探索先の既定値はありません。
+各rootを深さ0として、深さ5までのディレクトリにある `.mcp.json` と
+`.claude/settings.local.json`・`.claude/settings.json` を探します。
+`node_modules`・`.git`・`.venv`・`venv`・`__pycache__` とディレクトリへのリンクは探索しません。
+`--exclude GLOB` は複数指定でき、ディレクトリ名またはrootからの相対パスを `fnmatch` で照合します。
+Windowsでは大文字・小文字を区別しません。パス指定の例では `/` を使います。
+一致したディレクトリは読取り前に除外します。root自身やリポジトリも対象とし、一致するディレクトリ配下の履歴の検出結果も除外します。
+探索中に除外したディレクトリの件数をパターン別に通知します。0件の場合も通知します。
+`--file` は探索条件に関係なく指定ファイルを検査します。
+JSONが不正なら行単位で検査し、検出結果に `unparsed` を付けます。読み取れない対象はエラーです。
+読取り拒否や消失したディレクトリは、パス・失敗した処理・OSエラーの種類とerrnoを記録し、他のディレクトリの探索を続けます。
+Gitエラーには失敗したコマンドと終了コードを含めます。Git状態が不明ならJSONでは `null`、テキストでは `unknown` と表示します。
+使用できない `.git` をGitが `not a git repository` と判定した場合は、`skipped invalid git dir` の通知を出してスキップします。
+所有者不一致（`dubious ownership`）など他のGit失敗はエラーのままです。Gitの所有者確認設定は変更しません。
+
+`--history` は各リポジトリで対象パスに関わる最大200コミットについて、対象ファイル全体を現在ファイルと同じ構造化処理で調べます。
+パス・位置・種類・長さが同じ検出はまとめ、検査した範囲の最古・最新コミットを `oldest_commit`・`newest_commit` に保持します。
+それぞれのリモートブランチ包含判定は `oldest_remote`・`newest_remote` で示します。既存の `commit`・`remote` は最新の検出を示します。
+各rootから深さ5までのリポジトリ（`.git` がファイルの場合も含む）を探索するため、複数リポジトリをまとめた通常フォルダも指定できます。
+各リポジトリの履歴は深さを問わず対象名を検索し、削除済み・現在は無視対象のファイルも含めます。上限超過はリポジトリごとに通知します。
+`--file` の履歴は、そのリポジトリが `--root` からも発見された場合を除き、指定ファイルだけを対象にします。
+コミット識別子とリモートブランチへの包含判定は、ローカルにあるGit情報を使います。fetchは行いません。
+JSON出力には `files_scanned`・`findings`・`errors`・`notices` が入ります。
+終了コードは **0**＝検出なし、**10**＝検出あり、**2**＝引数・読取り・Gitエラーです。エラーを優先します。
+変数参照とプレースホルダーは除外し、一般的な代入値は6文字以上を対象にします。
+プロバイダー固有の形式も検出しますが、山括弧のプレースホルダー内と `op://` 参照内は除外します。
+固定長のGitHubトークン形式は接頭辞の後に英数字36文字を必要とします。数字を含む大文字の値はプレースホルダー扱いしません。
+空白なしの `curl -uuser:pass`、`Authorization: token`、`api-key` ヘッダーにも対応します。パターンによる検査のため、検出なしでも認証情報の不在を保証しません。
+検査対象ファイルは変更しません。

@@ -1,0 +1,1300 @@
+[
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:PGPASSWORD"
+    ]
+  },
+  {
+    "template": "MYSQL_PWD={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:MYSQL_PWD"
+    ]
+  },
+  {
+    "template": "PASSWORD={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:PASSWORD"
+    ]
+  },
+  {
+    "template": "TOKEN={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:TOKEN"
+    ]
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:API_KEY"
+    ]
+  },
+  {
+    "template": "OBSIDIAN_API_KEY={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_KEY"
+    ]
+  },
+  {
+    "template": "service_token={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_TOKEN"
+    ]
+  },
+  {
+    "template": "APP_SECRET={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_SECRET"
+    ]
+  },
+  {
+    "template": "DB_PASSWORD={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_PASSWORD"
+    ]
+  },
+  {
+    "template": "DB_PASS={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_PASS"
+    ]
+  },
+  {
+    "template": "APP_PAT={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_PAT"
+    ]
+  },
+  {
+    "template": "APP_KEY={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:*_KEY"
+    ]
+  },
+  {
+    "template": "PGPASSWORD=\"{value}\"",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:PGPASSWORD"
+    ]
+  },
+  {
+    "template": "PGPASSWORD='{value}'",
+    "parts": [
+      "a mixed ",
+      "literal987"
+    ],
+    "kinds": [
+      "assign:PGPASSWORD"
+    ]
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "json:API_KEY"
+    ]
+  },
+  {
+    "template": "\\\"SOME_API_KEY\\\":\\\"{value}\\\"",
+    "parts": [
+      "ab12cd34",
+      "ab12cd34",
+      "ab12cd34",
+      "ab12cd34",
+      "ab12cd34",
+      "ab12cd34",
+      "ab12cd34",
+      "ab12cd34"
+    ],
+    "kinds": [
+      "escaped-json:*_KEY"
+    ]
+  },
+  {
+    "template": "sshpass -p {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:sshpass"
+    ]
+  },
+  {
+    "template": "mysql -h example.test -p{value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:mysql"
+    ]
+  },
+  {
+    "template": "--password {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:password"
+    ]
+  },
+  {
+    "template": "--password={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:password"
+    ]
+  },
+  {
+    "template": "--token {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:token"
+    ]
+  },
+  {
+    "template": "--api-key {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:api-key"
+    ]
+  },
+  {
+    "template": "Authorization: Bearer {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:bearer"
+    ]
+  },
+  {
+    "template": "Authorization: Basic {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:basic"
+    ]
+  },
+  {
+    "template": "x-api-key: {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:x-api-key"
+    ]
+  },
+  {
+    "template": "curl -u demo:{value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:curl-user"
+    ]
+  },
+  {
+    "template": "https://demo:{value}@example.test",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "url:credentials"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "ghp",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:ghp"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "gho",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:gho"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "ghs",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:ghs"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "github",
+      "_pat_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:github-pat"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "glpat",
+      "-",
+      "aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:gitlab"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "sk",
+      "-ant-",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:anthropic"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "sk",
+      "-",
+      "aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": [
+      "shape:openai"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "xoxb",
+      "-",
+      "123456789-abcdefghi"
+    ],
+    "kinds": [
+      "shape:slack"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "xoxp",
+      "-",
+      "123456789-abcdefghi"
+    ],
+    "kinds": [
+      "shape:slack"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "AK",
+      "IA",
+      "12AB12AB12AB12AB"
+    ],
+    "kinds": [
+      "shape:aws"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "AI",
+      "za",
+      "aB1_aB1_aB1_aB1_aB1_aB1_aB1_aB1_aB1"
+    ],
+    "kinds": [
+      "shape:google"
+    ]
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "-----",
+      "BEGIN ",
+      "RSA ",
+      "PRIVATE ",
+      "KEY",
+      "-----"
+    ],
+    "kinds": [
+      "shape:private-key"
+    ]
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "assign:API_KEY"
+    ],
+    "key": "API_KEY"
+  },
+  {
+    "template": "Bearer {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:bearer"
+    ],
+    "key": "Authorization"
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:x-api-key"
+    ],
+    "key": "x-api-key"
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "$",
+      "VAR"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "$",
+      "VAR"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "$",
+      "{VAR}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "$",
+      "{VAR}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "%",
+      "VAR",
+      "%"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "%",
+      "VAR",
+      "%"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "$",
+      "env:VAR"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "$",
+      "env:VAR"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "op",
+      ":",
+      "//vault/item/key"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "op",
+      ":",
+      "//vault/item/key"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "<",
+      "your-api-key",
+      ">"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "<",
+      "your-api-key",
+      ">"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "YOUR",
+      "_TOKEN"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "YOUR",
+      "_TOKEN"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "xxx",
+      "..."
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "xxx",
+      "..."
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "***"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "***"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "RED",
+      "ACTED"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "RED",
+      "ACTED"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "short"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"API_KEY\":\"{value}\"",
+    "parts": [
+      "short"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "sshpass -p {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "mysql -p{value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "--password {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "--token {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "--api-key {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "Authorization: Bearer {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "Authorization: Basic {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "x-api-key: {value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "curl -u demo:{value}",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "https://demo:{value}@example.test",
+    "parts": [
+      "$",
+      "{TOKEN}"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "REGULAR_NAME={value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "\"Authorization\":\"Bearer {value}\"",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:bearer"
+    ]
+  },
+  {
+    "template": "\"Authorization\":\"Basic {value}\"",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:basic"
+    ]
+  },
+  {
+    "template": "\"x-api-key\":\"{value}\"",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:x-api-key"
+    ]
+  },
+  {
+    "template": "\\\"Authorization\\\":\\\"Bearer {value}\\\"",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:bearer"
+    ]
+  },
+  {
+    "template": "Bash(PGPASSWORD={value} psql -c \"select 1\")",
+    "parts": [
+      "E9F1",
+      "A2B3",
+      "C4D5"
+    ],
+    "kinds": [
+      "assign:PGPASSWORD"
+    ]
+  },
+  {
+    "template": "Bash(API_KEY={value} run)",
+    "parts": [
+      "ABCD",
+      "1234",
+      "EFGH",
+      "5678"
+    ],
+    "kinds": [
+      "assign:API_KEY"
+    ]
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "UPPER",
+      "CASE"
+    ],
+    "kinds": [
+      "assign:API_KEY"
+    ]
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "YOUR",
+      "_TOKEN1"
+    ],
+    "kinds": [
+      "assign:API_KEY"
+    ]
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "CHANGEME"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "example",
+      "_secret"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "place",
+      "holder"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "<YOUR",
+      "_TOKEN1>"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "API_KEY={value}",
+    "parts": [
+      "op://vault/",
+      "item1/token"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "ghp",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB1"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "ghp",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12",
+      "Z"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <{value}>",
+    "parts": [
+      "ghp",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "op://vault/{value}/token",
+    "parts": [
+      "ghp",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "gho",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB1"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "gho",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12",
+      "Z"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <{value}>",
+    "parts": [
+      "gho",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "op://vault/{value}/token",
+    "parts": [
+      "gho",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "ghs",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB1"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo {value}",
+    "parts": [
+      "ghs",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12",
+      "Z"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <{value}>",
+    "parts": [
+      "ghs",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "op://vault/{value}/token",
+    "parts": [
+      "ghs",
+      "_",
+      "aB12aB12aB12aB12aB12aB12aB12aB12aB12"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "<",
+      "ghp",
+      "_YOUR_TOKEN>"
+    ],
+    "kinds": [],
+    "key": "GITHUB_TOKEN"
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "op://vault/",
+      "ghp",
+      "_example/token"
+    ],
+    "kinds": [],
+    "key": "GITHUB_TOKEN"
+  },
+  {
+    "template": "curl -udemo:{value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "cli:curl-user"
+    ]
+  },
+  {
+    "template": "Authorization: token {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:token"
+    ]
+  },
+  {
+    "template": "api-key: {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:api-key"
+    ]
+  },
+  {
+    "template": "token {value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:token"
+    ],
+    "key": "Authorization"
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "synthetic",
+      "Mixed",
+      "9876"
+    ],
+    "kinds": [
+      "header:api-key"
+    ],
+    "key": "api-key"
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "monkey",
+      "Banana"
+    ],
+    "kinds": [
+      "assign:PGPASSWORD"
+    ]
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "my",
+      "SecretSauce"
+    ],
+    "kinds": [
+      "assign:PGPASSWORD"
+    ]
+  },
+  {
+    "template": "PGPASSWORD=\"{value}\"",
+    "parts": [
+      "YOUR",
+      "-API KEY"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "PGPASSWORD={value}",
+    "parts": [
+      "MY",
+      "_PASSWORD_VALUE_HERE"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "Authorization: Bearer {value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <Authorization: token {value}>",
+    "parts": [
+      "placeholder",
+      "-value"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <PGPASSWORD={value}>",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <\"API_KEY\":\"{value}\">",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <curl -u demo:{value}>",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <https://demo:{value}@example.test>",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "curl --user=demo:{value}",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": [
+      "cli:curl-user"
+    ]
+  },
+  {
+    "template": "curl --oauth2-bearer {value}",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": [
+      "cli:oauth2-bearer"
+    ]
+  },
+  {
+    "template": "redis-cli -a {value}",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": [
+      "cli:redis-pass"
+    ]
+  },
+  {
+    "template": "redis-cli --pass {value}",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": [
+      "cli:redis-pass"
+    ]
+  },
+  {
+    "template": "Bearer {value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": [],
+    "key": "Authorization"
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": [],
+    "key": "API_KEY"
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": [],
+    "key": "api-key"
+  },
+  {
+    "template": "echo <\\\"API_KEY\\\":\\\"{value}\\\">",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <redis-cli --pass {value}>",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "echo <curl --oauth2-bearer {value}>",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "curl --oauth2-bearer {value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "redis-cli -a {value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "redis-cli --pass {value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "curl --user=demo:{value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN>"
+    ],
+    "kinds": []
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN> suffix"
+    ],
+    "kinds": [],
+    "key": "API_KEY"
+  },
+  {
+    "template": "{value}",
+    "parts": [
+      "<YOUR",
+      " TOKEN> suffix"
+    ],
+    "kinds": [],
+    "key": "api-key"
+  },
+  {
+    "template": "echo <--token ignored> --token {value}",
+    "parts": [
+      "synthetic",
+      "Mixed9876"
+    ],
+    "kinds": [
+      "cli:token"
+    ]
+  }
+]
